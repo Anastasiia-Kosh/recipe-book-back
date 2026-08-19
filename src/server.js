@@ -5,7 +5,7 @@ import { connectMongoDB } from './db/connectMongoDB.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { logger } from './middleware/logger.js';
-import notesRoutes from './routes/notesRoutes.js';
+import recipesRoutes from './routes/recipesRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { errors } from 'celebrate';
@@ -20,7 +20,7 @@ app.use(logger);
 app.use(cookieParser());
 
 app.use(authRoutes);
-app.use(notesRoutes);
+app.use(recipesRoutes);
 app.use(userRoutes);
 // обробка 404
 app.use(notFoundHandler);
