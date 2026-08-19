@@ -26,3 +26,8 @@ export const resetPasswordSchema = {
     token: Joi.string().required(),
   }),
 };
+export const updateCurrentUserSchema = {
+  [Segments.BODY]: Joi.object({
+    username: Joi.string().trim().min(2).max(50).required(),
+  }),
+};

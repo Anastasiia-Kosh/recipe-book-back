@@ -18,3 +18,21 @@ export const updateUserAvatar = async (req, res, next) => {
 
   res.status(200).json({ url: updatedUser.avatar });
 };
+
+export const getCurrentUser = async (req, res) => {
+  res.status(200).json(req.user);
+};
+export const updateCurrentUser = async (req, res) => {
+  const { username } = req.body;
+
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user._id,
+    { username },
+    {
+      returnDocument: 'after',
+      runValidators: true,
+    },
+  );
+
+  res.status(200).json(updatedUser);
+};
