@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Anastasiia-Kosh/nodejs-hw.git"
+    "url": "git+https://github.com/Anastasiia-Kosh/recipe-book-back.git"
   },
   "keywords": [],
   "author": "",
@@ -20,9 +20,9 @@
     "lodash": "4.18.1"
   },
   "bugs": {
-    "url": "https://github.com/Anastasiia-Kosh/nodejs-hw/issues"
+    "url": "https://github.com/Anastasiia-Kosh/recipe-book-back/issues"
   },
-  "homepage": "https://github.com/Anastasiia-Kosh/nodejs-hw#readme",
+  "homepage": "https://github.com/Anastasiia-Kosh/recipe-book-back#readme",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "eslint": "^10.5.0",
