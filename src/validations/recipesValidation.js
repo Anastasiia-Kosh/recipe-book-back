@@ -33,7 +33,9 @@ export const createRecipeSchema = {
 
     shortDescription: Joi.string().trim().min(1).required(),
 
-    text: Joi.string().trim().min(1).required(),
+    ingredients: Joi.string().trim().min(1).required(),
+
+    instructions: Joi.string().trim().min(1).required(),
 
     baseRecipeId: Joi.string().custom(objectIdValidator).allow(null),
   }),
@@ -51,7 +53,9 @@ export const updateRecipeSchema = {
 
     shortDescription: Joi.string().trim().min(1),
 
-    text: Joi.string().trim().min(1),
+    ingredients: Joi.string().trim().min(1),
+
+    instructions: Joi.string().trim().min(1),
 
     baseRecipeId: Joi.string().custom(objectIdValidator).allow(null),
   }),

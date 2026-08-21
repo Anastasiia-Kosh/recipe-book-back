@@ -10,6 +10,7 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { errors } from 'celebrate';
 import cookieParser from 'cookie-parser';
+import savedRecipesRoutes from './routes/savedRecipesRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3001;
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(authRoutes);
 app.use(recipesRoutes);
 app.use(userRoutes);
+app.use(savedRecipesRoutes);
 // обробка 404
 app.use(notFoundHandler);
 // обробка помилок від celebrate (валідація)

@@ -146,3 +146,52 @@ export const deleteRecipe = async (req, res) => {
   }
   res.status(200).json(recipe);
 };
+
+export const getMyRecipes = async (req, res) => {
+  const { page = 1, perPage = 12, category, search } = req.query;
+
+  const skip = (page - 1) * perPage;
+
+  const recipesQuery = Recipe.find({
+    userId: req.user._id,
+  });
+
+  if (category) {
+    recipesQuery.where('category').equals(category);
+  }
+
+  if (search) {
+    recipesQuery.where({
+      $or: [
+        {
+          title: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
+        {
+          shortDescription: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
+      ],
+    });
+  }
+
+  const [totalRecipes, recipes] = await Promise.all([
+    recipesQuery.clone().countDocuments(),
+
+    recipesQuery.sort({ createdAt: -1 }).skip(skip).limit(perPage),
+  ]);
+
+  const totalPages = Math.ceil(totalRecipes / perPage);
+
+  res.status(200).json({
+    page,
+    perPage,
+    totalRecipes,
+    totalPages,
+    recipes,
+  });
+};
