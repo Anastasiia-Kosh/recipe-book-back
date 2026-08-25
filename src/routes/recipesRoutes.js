@@ -6,6 +6,7 @@ import {
   createRecipe,
   deleteRecipe,
   getAllRecipes,
+  getCategoryCounts,
   getRecipeById,
   updateRecipe,
 } from '../controllers/recipesController.js';
@@ -23,6 +24,8 @@ const router = Router();
 
 // public
 router.get('/recipes', celebrate(getAllRecipesSchema), getAllRecipes);
+
+router.get('/recipes/categories/counts', getCategoryCounts);
 
 router.get('/recipes/:recipeId', celebrate(recipeIdSchema), getRecipeById);
 

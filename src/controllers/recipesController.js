@@ -51,6 +51,26 @@ export const getAllRecipes = async (req, res) => {
   });
 };
 
+export const getCategoryCounts = async (req, res) => {
+  const categories = await Recipe.aggregate([
+    {
+      $group: {
+        _id: '$category',
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        category: '$_id',
+        count: 1,
+      },
+    },
+  ]);
+
+  res.status(200).json(categories);
+};
+
 export const getRecipeById = async (req, res) => {
   const { recipeId } = req.params;
 
@@ -195,3 +215,37 @@ export const getMyRecipes = async (req, res) => {
     recipes,
   });
 };
+
+// export const createRecipe = async (req, res) => {
+//   if (!req.file) {
+//     throw createHttpError(400, 'Recipe image is required');
+//   }
+
+//   console.time('CREATE_RECIPE_TOTAL');
+
+//   const recipeId = new Types.ObjectId();
+
+//   console.time('CLOUDINARY_UPLOAD');
+
+//   const uploadedImage = await saveRecipeImageToCloudinary(
+//     req.file.buffer,
+//     recipeId,
+//   );
+
+//   console.timeEnd('CLOUDINARY_UPLOAD');
+
+//   console.time('MONGODB_CREATE');
+
+//   const recipe = await Recipe.create({
+//     _id: recipeId,
+//     ...req.body,
+//     image: uploadedImage.secure_url,
+//     imagePublicId: uploadedImage.public_id,
+//     userId: req.user._id,
+//   });
+
+//   console.timeEnd('MONGODB_CREATE');
+//   console.timeEnd('CREATE_RECIPE_TOTAL');
+
+//   res.status(201).json(recipe);
+// };
