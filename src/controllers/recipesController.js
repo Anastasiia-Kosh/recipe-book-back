@@ -30,6 +30,12 @@ export const getAllRecipes = async (req, res) => {
             $options: 'i',
           },
         },
+        {
+          ingredients: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
       ],
     });
   }
