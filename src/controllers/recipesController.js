@@ -3,7 +3,7 @@ import { Recipe } from '../models/recipe.js';
 import { saveRecipeImageToCloudinary } from '../utils/saveRecipeImageToCloudinary.js';
 import { deleteRecipeImageFromCloudinary } from '../utils/deleteRecipeImageFromCloudinary.js';
 import { Types } from 'mongoose';
-
+import { SavedRecipe } from '../models/savedRecipe.js';
 export const getAllRecipes = async (req, res) => {
   const { page = 1, perPage = 12, category, search } = req.query;
 
@@ -160,6 +160,11 @@ export const deleteRecipe = async (req, res) => {
   if (!recipe) {
     throw createHttpError(404, 'Recipe not found');
   }
+
+  await SavedRecipe.deleteMany({
+    recipeId,
+  });
+
   if (recipe.imagePublicId) {
     try {
       await deleteRecipeImageFromCloudinary(recipe.imagePublicId);
@@ -221,37 +226,3 @@ export const getMyRecipes = async (req, res) => {
     recipes,
   });
 };
-
-// export const createRecipe = async (req, res) => {
-//   if (!req.file) {
-//     throw createHttpError(400, 'Recipe image is required');
-//   }
-
-//   console.time('CREATE_RECIPE_TOTAL');
-
-//   const recipeId = new Types.ObjectId();
-
-//   console.time('CLOUDINARY_UPLOAD');
-
-//   const uploadedImage = await saveRecipeImageToCloudinary(
-//     req.file.buffer,
-//     recipeId,
-//   );
-
-//   console.timeEnd('CLOUDINARY_UPLOAD');
-
-//   console.time('MONGODB_CREATE');
-
-//   const recipe = await Recipe.create({
-//     _id: recipeId,
-//     ...req.body,
-//     image: uploadedImage.secure_url,
-//     imagePublicId: uploadedImage.public_id,
-//     userId: req.user._id,
-//   });
-
-//   console.timeEnd('MONGODB_CREATE');
-//   console.timeEnd('CREATE_RECIPE_TOTAL');
-
-//   res.status(201).json(recipe);
-// };
