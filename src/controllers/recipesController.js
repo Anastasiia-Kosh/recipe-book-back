@@ -4,6 +4,14 @@ import { saveRecipeImageToCloudinary } from '../utils/saveRecipeImageToCloudinar
 import { deleteRecipeImageFromCloudinary } from '../utils/deleteRecipeImageFromCloudinary.js';
 import { Types } from 'mongoose';
 import { SavedRecipe } from '../models/savedRecipe.js';
+import sanitizeHtml from 'sanitize-html';
+
+const sanitizeRecipeText = (html) =>
+  sanitizeHtml(html, {
+    allowedTags: ['p', 'strong', 'em', 'ul', 'ol', 'li', 'h3', 'br'],
+    allowedAttributes: {},
+  });
+
 export const getAllRecipes = async (req, res) => {
   const { page = 1, perPage = 12, category, search } = req.query;
 
@@ -103,6 +111,8 @@ export const createRecipe = async (req, res) => {
   const recipe = await Recipe.create({
     _id: recipeId,
     ...req.body,
+    ingredients: sanitizeRecipeText(req.body.ingredients),
+    instructions: sanitizeRecipeText(req.body.instructions),
     image: uploadedImage.secure_url,
     imagePublicId: uploadedImage.public_id,
     userId: req.user._id,
@@ -130,6 +140,13 @@ export const updateRecipe = async (req, res) => {
   const updateData = {
     ...req.body,
   };
+  if (typeof req.body.ingredients === 'string') {
+    updateData.ingredients = sanitizeRecipeText(req.body.ingredients);
+  }
+
+  if (typeof req.body.instructions === 'string') {
+    updateData.instructions = sanitizeRecipeText(req.body.instructions);
+  }
 
   if (req.file) {
     const uploadedImage = await saveRecipeImageToCloudinary(
