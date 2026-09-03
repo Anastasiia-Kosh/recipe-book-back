@@ -1,9 +1,25 @@
 import { Joi, Segments } from 'celebrate';
 import { isValidObjectId } from 'mongoose';
 import { CATEGORIES } from '../constants/categories.js';
+import sanitizeHtml from 'sanitize-html';
 
 export const objectIdValidator = (value, helpers) => {
   return !isValidObjectId(value) ? helpers.message('Invalid id format') : value;
+};
+const richTextValidator = (value, helpers) => {
+  const text = sanitizeHtml(value, {
+    allowedTags: [],
+    allowedAttributes: {},
+  })
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/\u00a0/g, ' ')
+    .trim();
+
+  if (!text) {
+    return helpers.message('Field must contain text');
+  }
+
+  return value;
 };
 
 export const getAllRecipesSchema = {
@@ -33,9 +49,17 @@ export const createRecipeSchema = {
 
     shortDescription: Joi.string().trim().min(1).required(),
 
-    ingredients: Joi.string().trim().min(1).required(),
+    ingredients: Joi.string()
+      .trim()
+      .min(1)
+      .custom(richTextValidator)
+      .required(),
 
-    instructions: Joi.string().trim().min(1).required(),
+    instructions: Joi.string()
+      .trim()
+      .min(1)
+      .custom(richTextValidator)
+      .required(),
 
     baseRecipeId: Joi.string().custom(objectIdValidator).allow(null),
   }),
@@ -53,9 +77,9 @@ export const updateRecipeSchema = {
 
     shortDescription: Joi.string().trim().min(1),
 
-    ingredients: Joi.string().trim().min(1),
+    ingredients: Joi.string().trim().min(1).custom(richTextValidator),
 
-    instructions: Joi.string().trim().min(1),
+    instructions: Joi.string().trim().min(1).custom(richTextValidator),
 
     baseRecipeId: Joi.string().custom(objectIdValidator).allow(null),
   }),
