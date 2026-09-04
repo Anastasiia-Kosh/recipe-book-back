@@ -118,6 +118,7 @@ http://localhost:3001/api-docs/
 npm run dev      # start development server with nodemon
 npm start        # start production server
 npm run swagger  # regenerate src/swagger.json
+npm run lint     # run ESLint
 ```
 
 ## Project Structure
