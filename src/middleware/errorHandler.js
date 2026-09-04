@@ -5,7 +5,7 @@ export const errorHandler = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === 'LIMIT_FILE_SIZE') {
       return res.status(413).json({
-        message: 'Image must not exceed 10 MB',
+        message: 'Image must not exceed 4 MB',
       });
     }
 
