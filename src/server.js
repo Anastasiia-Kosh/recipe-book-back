@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import 'dotenv/config';
 import { connectMongoDB } from './db/connectMongoDB.js';
 import { errorHandler } from './middleware/errorHandler.js';
@@ -16,8 +17,25 @@ import savedRecipesRoutes from './routes/savedRecipesRoutes.js';
 const app = express();
 const PORT = process.env.PORT ?? 3001;
 
+const allowedOrigins = [
+  process.env.FRONTEND_DOMAIN,
+  'http://localhost:3000',
+].filter(Boolean);
+
 app.use(express.json());
-app.use(cors());
+app.use(helmet());
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  }),
+);
 app.use(logger);
 app.use(cookieParser());
 
