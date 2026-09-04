@@ -42,7 +42,7 @@ export const loginUser = async (req, res) => {
   if (!isValidPassword) {
     throw createHttpError(401, 'Invalid credentials');
   }
-  await Session.deleteOne({ userId: user._id });
+
   const newSession = await createSession(user._id);
   setSessionCookies(res, newSession);
   res.status(200).json(user);
@@ -165,6 +165,6 @@ export const resetPassword = async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   await User.updateOne({ _id: user._id }, { password: hashedPassword });
-  await Session.deleteMany({ userId: user._id });
+
   res.status(200).json({ message: 'Password reset successfully' });
 };
