@@ -12,6 +12,8 @@ const sanitizeRecipeText = (html) =>
     allowedAttributes: {},
   });
 
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 export const getAllRecipes = async (req, res) => {
   const { page = 1, perPage = 12, category, search } = req.query;
 
@@ -24,23 +26,25 @@ export const getAllRecipes = async (req, res) => {
   }
 
   if (search) {
+    const safeSearch = escapeRegex(search);
+
     recipesQuery.where({
       $or: [
         {
           title: {
-            $regex: search,
+            $regex: safeSearch,
             $options: 'i',
           },
         },
         {
           shortDescription: {
-            $regex: search,
+            $regex: safeSearch,
             $options: 'i',
           },
         },
         {
           ingredients: {
-            $regex: search,
+            $regex: safeSearch,
             $options: 'i',
           },
         },
@@ -209,17 +213,19 @@ export const getMyRecipes = async (req, res) => {
   }
 
   if (search) {
+    const safeSearch = escapeRegex(search);
+
     recipesQuery.where({
       $or: [
         {
           title: {
-            $regex: search,
+            $regex: safeSearch,
             $options: 'i',
           },
         },
         {
           shortDescription: {
-            $regex: search,
+            $regex: safeSearch,
             $options: 'i',
           },
         },

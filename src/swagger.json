@@ -1217,23 +1217,6 @@
     }
   },
   "components": {
-    "securitySchemes": {
-      "accessToken": {
-        "type": "apiKey",
-        "in": "cookie",
-        "name": "accessToken"
-      },
-      "refreshToken": {
-        "type": "apiKey",
-        "in": "cookie",
-        "name": "refreshToken"
-      },
-      "sessionId": {
-        "type": "apiKey",
-        "in": "cookie",
-        "name": "sessionId"
-      }
-    },
     "schemas": {
       "User": {
         "type": "object",
@@ -1398,14 +1381,22 @@
           }
         }
       }
-    }
-  },
-  "Error": {
-    "type": "object",
-    "properties": {
-      "message": {
-        "type": "string",
-        "example": "Something went wrong"
+    },
+    "securitySchemes": {
+      "accessToken": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "accessToken"
+      },
+      "refreshToken": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "refreshToken"
+      },
+      "sessionId": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "sessionId"
       }
     }
   }

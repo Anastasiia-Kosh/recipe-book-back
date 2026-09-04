@@ -45,9 +45,9 @@ export const createRecipeSchema = {
       .valid(...CATEGORIES)
       .required(),
 
-    title: Joi.string().trim().min(1).required(),
+    title: Joi.string().trim().min(1).max(120).required(),
 
-    shortDescription: Joi.string().trim().min(1).required(),
+    shortDescription: Joi.string().trim().min(1).max(500).required(),
 
     ingredients: Joi.string()
       .trim()
@@ -73,9 +73,9 @@ export const updateRecipeSchema = {
   [Segments.BODY]: Joi.object({
     category: Joi.string().valid(...CATEGORIES),
 
-    title: Joi.string().trim().min(1),
+    title: Joi.string().trim().min(1).max(120),
 
-    shortDescription: Joi.string().trim().min(1),
+    shortDescription: Joi.string().trim().min(1).max(500),
 
     ingredients: Joi.string().trim().min(1).custom(richTextValidator),
 

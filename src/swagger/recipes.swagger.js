@@ -1,18 +1,4 @@
-const categories = [
-  'Macarons',
-  'Млинці',
-  'Варення',
-  'Десерти',
-  'Кекси',
-  'Торти',
-  'Тарти',
-  'Пироги',
-  'Печиво',
-  'Рогалики',
-  'Інше',
-  'Основні страви',
-  'Перші страви',
-];
+import { CATEGORIES } from '../constants/categories.js';
 
 export const recipesPaths = {
   '/recipes': {
@@ -47,7 +33,7 @@ export const recipesPaths = {
           in: 'query',
           schema: {
             type: 'string',
-            enum: categories,
+            enum: CATEGORIES,
           },
         },
         {
@@ -111,7 +97,7 @@ export const recipesPaths = {
               properties: {
                 category: {
                   type: 'string',
-                  enum: categories,
+                  enum: CATEGORIES,
                 },
                 title: {
                   type: 'string',
@@ -194,7 +180,7 @@ export const recipesPaths = {
                   properties: {
                     category: {
                       type: 'string',
-                      enum: categories,
+                      enum: CATEGORIES,
                       example: 'Торти',
                     },
                     count: {
@@ -302,7 +288,7 @@ export const recipesPaths = {
               properties: {
                 category: {
                   type: 'string',
-                  enum: categories,
+                  enum: CATEGORIES,
                 },
                 title: {
                   type: 'string',

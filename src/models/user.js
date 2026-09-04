@@ -10,6 +10,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       trim: true,
+      lowercase: true,
       unique: true,
     },
     password: {
@@ -35,6 +36,7 @@ userSchema.pre('save', async function () {
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
+  delete obj.__v;
   return obj;
 };
 export const User = model('User', userSchema);

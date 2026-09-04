@@ -47,38 +47,6 @@ const doc = {
       description: 'Manage user favorite recipes',
     },
   ],
-
-  components: {
-    securitySchemes: {
-      accessToken: {
-        type: 'apiKey',
-        in: 'cookie',
-        name: 'accessToken',
-      },
-
-      refreshToken: {
-        type: 'apiKey',
-        in: 'cookie',
-        name: 'refreshToken',
-      },
-
-      sessionId: {
-        type: 'apiKey',
-        in: 'cookie',
-        name: 'sessionId',
-      },
-    },
-  },
-
-  Error: {
-    type: 'object',
-    properties: {
-      message: {
-        type: 'string',
-        example: 'Something went wrong',
-      },
-    },
-  },
 };
 
 const outputFile = path.join(__dirname, 'swagger.json');

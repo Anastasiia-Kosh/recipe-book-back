@@ -64,4 +64,13 @@ recipeSchema.index({ category: 1 });
 recipeSchema.index({ title: 1 });
 recipeSchema.index({ userId: 1 });
 
+recipeSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+
+  delete obj.imagePublicId;
+  delete obj.__v;
+
+  return obj;
+};
+
 export const Recipe = model('Recipe', recipeSchema);

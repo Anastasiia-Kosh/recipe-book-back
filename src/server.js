@@ -5,14 +5,11 @@ import { connectMongoDB } from './db/connectMongoDB.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { logger } from './middleware/logger.js';
-
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger.json' with { type: 'json' };
-
 import recipesRoutes from './routes/recipesRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-import { errors } from 'celebrate';
 import cookieParser from 'cookie-parser';
 import savedRecipesRoutes from './routes/savedRecipesRoutes.js';
 
@@ -32,8 +29,7 @@ app.use(userRoutes);
 app.use(savedRecipesRoutes);
 // обробка 404
 app.use(notFoundHandler);
-// обробка помилок від celebrate (валідація)
-app.use(errors());
+
 // глобальна обробка інших помилок
 app.use(errorHandler);
 
