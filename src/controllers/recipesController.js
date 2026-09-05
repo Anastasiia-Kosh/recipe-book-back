@@ -8,8 +8,11 @@ import sanitizeHtml from 'sanitize-html';
 
 const sanitizeRecipeText = (html) =>
   sanitizeHtml(html, {
-    allowedTags: ['p', 'strong', 'em', 'ul', 'ol', 'li', 'h3', 'br'],
-    allowedAttributes: {},
+    allowedTags: ['p', 'strong', 'em', 'ul', 'ol', 'li', 'h3', 'br', 'a'],
+    allowedAttributes: {
+      a: ['href'],
+    },
+    allowedSchemes: ['http', 'https'],
   });
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
