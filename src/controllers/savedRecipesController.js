@@ -27,13 +27,33 @@ export const saveRecipe = async (req, res) => {
 };
 
 export const getSavedRecipes = async (req, res) => {
-  const savedRecipes = await SavedRecipe.find({
-    userId: req.user._id,
-  })
-    .sort({ createdAt: -1 })
-    .populate('recipeId');
+  const { page = 1, perPage = 12 } = req.query;
 
-  res.status(200).json(savedRecipes);
+  const skip = (page - 1) * perPage;
+
+  const filter = {
+    userId: req.user._id,
+  };
+
+  const [totalSavedRecipes, savedRecipes] = await Promise.all([
+    SavedRecipe.countDocuments(filter),
+
+    SavedRecipe.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(perPage)
+      .populate('recipeId'),
+  ]);
+
+  const totalPages = Math.ceil(totalSavedRecipes / perPage);
+
+  res.status(200).json({
+    page,
+    perPage,
+    totalSavedRecipes,
+    totalPages,
+    savedRecipes,
+  });
 };
 
 export const deleteSavedRecipe = async (req, res) => {

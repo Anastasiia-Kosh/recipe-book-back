@@ -1,7 +1,10 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
 import { authenticate } from '../middleware/authenticate.js';
-import { recipeIdSchema } from '../validations/recipesValidation.js';
+import {
+  getSavedRecipesSchema,
+  recipeIdSchema,
+} from '../validations/recipesValidation.js';
 import {
   saveRecipe,
   getSavedRecipes,
@@ -16,7 +19,12 @@ router.post(
   celebrate(recipeIdSchema),
   saveRecipe,
 );
-router.get('/saved-recipes', authenticate, getSavedRecipes);
+router.get(
+  '/saved-recipes',
+  authenticate,
+  celebrate(getSavedRecipesSchema),
+  getSavedRecipes,
+);
 router.delete(
   '/saved-recipes/:recipeId',
   authenticate,
