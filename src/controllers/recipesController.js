@@ -16,6 +16,8 @@ const sanitizeRecipeText = (html) =>
   });
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const createWholeWordRegex = (value) =>
+  `(*UCP)\\b${escapeRegex(value.trim())}\\b`;
 
 export const getAllRecipes = async (req, res) => {
   const { page = 1, perPage = 12, category, search } = req.query;
@@ -29,25 +31,31 @@ export const getAllRecipes = async (req, res) => {
   }
 
   if (search) {
-    const safeSearch = escapeRegex(search);
+    const wholeWordRegex = createWholeWordRegex(search);
 
     recipesQuery.where({
       $or: [
         {
           title: {
-            $regex: safeSearch,
+            $regex: wholeWordRegex,
             $options: 'i',
           },
         },
         {
           shortDescription: {
-            $regex: safeSearch,
+            $regex: wholeWordRegex,
             $options: 'i',
           },
         },
         {
           ingredients: {
-            $regex: safeSearch,
+            $regex: wholeWordRegex,
+            $options: 'i',
+          },
+        },
+        {
+          instructions: {
+            $regex: wholeWordRegex,
             $options: 'i',
           },
         },
