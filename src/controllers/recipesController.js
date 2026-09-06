@@ -224,26 +224,37 @@ export const getMyRecipes = async (req, res) => {
   }
 
   if (search) {
-    const safeSearch = escapeRegex(search);
+    const wholeWordRegex = createWholeWordRegex(search);
 
     recipesQuery.where({
       $or: [
         {
           title: {
-            $regex: safeSearch,
+            $regex: wholeWordRegex,
             $options: 'i',
           },
         },
         {
           shortDescription: {
-            $regex: safeSearch,
+            $regex: wholeWordRegex,
+            $options: 'i',
+          },
+        },
+        {
+          ingredients: {
+            $regex: wholeWordRegex,
+            $options: 'i',
+          },
+        },
+        {
+          instructions: {
+            $regex: wholeWordRegex,
             $options: 'i',
           },
         },
       ],
     });
   }
-
   const [totalRecipes, recipes] = await Promise.all([
     recipesQuery.clone().countDocuments(),
 
